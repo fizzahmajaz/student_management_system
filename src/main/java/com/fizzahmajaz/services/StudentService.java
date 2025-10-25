@@ -43,6 +43,7 @@ public class StudentService {
         if(existingStudent.isPresent()){
             StudentModel newData = existingStudent.get();
             newData.setName(updatedData.getName());
+            newData.setRollNumber(updatedData.getRollNumber());
             newData.setEmail(updatedData.getEmail());
             newData.setCourse(updatedData.getCourse());
             newData.setGrade(updatedData.getGrade());
@@ -79,6 +80,7 @@ public class StudentService {
         if(existingStudent.isPresent()){
             StudentModel newData = existingStudent.get();
             newData.setName(updatedData.getName());
+            newData.setRollNumber(updatedData.getRollNumber());
             newData.setEmail(updatedData.getEmail());
             newData.setCourse(updatedData.getCourse());
             newData.setGrade(updatedData.getGrade());
@@ -116,6 +118,7 @@ public class StudentService {
         if(existingStudent.isPresent()){
             StudentModel newData = existingStudent.get();
             newData.setName(updatedData.getName());
+            newData.setRollNumber(updatedData.getRollNumber());
             newData.setEmail(updatedData.getEmail());
             newData.setCourse(updatedData.getCourse());
             newData.setGrade(updatedData.getGrade());
@@ -163,32 +166,6 @@ public class StudentService {
         return studentRepository.findByGrade(grade);
     }
 
-
-    //====================================================
-
-    //Update Student
-    public StudentModel updateStudent(Long id, StudentModel studentModel){
-        return studentRepository.findById(id).map(student -> {
-            student.setName(studentModel.getName());
-            student.setEmail(studentModel.getCourse());
-            student.setCourse(studentModel.getCourse());
-            student.setGrade(studentModel.getGrade());
-            return studentRepository.save(student);
-        }).orElse(null);
-                                
-    }
-
-
-    //delete student method
-    public boolean deleteStudent(Long id){
-        if(studentRepository.existsById(id)){
-            studentRepository.deleteById(id);
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
 
 
 

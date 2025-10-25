@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Adduha Student Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background: radial-gradient(circle at 20% 20%, #051421, #000);
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        /* Particle background */
+        
+        #particles-js {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+        
+        header {
+            z-index: 2;
+            position: relative;
+            text-align: center;
+            padding: 20px;
+            font-size: 1.8rem;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .dashboard {
+            z-index: 2;
+            position: relative;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.15);
+            transition: 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
+        }
+        
+        .student-list {
+            margin-top: 15px;
+        }
+        
+        .student {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px 15px;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, cyan, #00ffff88);
+            color: black;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+        
+        .btn:hover {
+            opacity: 0.85;
+        }
+        /* Modal */
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 10;
+        }
+        
+        .modal-content {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            padding: 25px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+        }
+        
+        input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 10px;
+            border: none;
+            margin: 10px 0;
+            outline: none;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        
+        @media (max-width: 768px) {
+            header {
+                font-size: 1.4rem;
+            }
+            .card {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="particles-js"></div>
+
+    <header>🎓 Adduha Student Dashboard</header>
+
+    <div class="dashboard">
+        <div class="card">
+            <h2>Students</h2>
+            <button class="btn" onclick="openModal()">+ Add Student</button>
+            <div class="student-list" id="studentList"></div>
+        </div>
+
+        <div class="card">
+            <h2>Statistics</h2>
+            <p>Total Students: <span id="studentCount">0</span></p>
+        </div>
+
+        <div class="card">
+            <h2>Actions</h2>
+            <button class="btn" onclick="sortStudents()">Sort by Name</button>
+            <button class="btn" onclick="clearStudents()">Clear All</button>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="studentModal">
+        <div class="modal-content">
+            <h2>Add New Student</h2>
+            <input type="text" id="studentName" placeholder="Student Name" />
+            <input type="text" id="studentGrade" placeholder="Grade" />
+            <button class="btn" onclick="addStudent()">Add</button>
+            <button class="btn" style="background:rgba(255,255,255,0.3)" onclick="closeModal()">Cancel</button>
+        </div>
+    </div>
+
+    <!-- Particles.js -->
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script>
+        particlesJS("particles-js", {
+            "particles": {
+                "number": {
+                    "value": 60
+                },
+                "color": {
+                    "value": "#00ffff"
+                },
+                "shape": {
+                    "type": "circle"
+                },
+                "opacity": {
+                    "value": 0.5
+                },
+                "size": {
+                    "value": 3
+                },
+                "line_linked": {
+                    "enable": true,
+                    "color": "#00ffff"
+                },
+                "move": {
+                    "enable": true,
+                    "speed": 1.5
+                }
+            }
+        });
+    </script>
+
+    <!-- Main JS -->
+    <script>
+        let students = [];
+
+        function openModal() {
+            document.getElementById("studentModal").style.display = "flex";
+        }
+
+        function closeModal() {
+            document.getElementById("studentModal").style.display = "none";
+        }
+
+        function addStudent() {
+            const name = document.getElementById("studentName").value.trim();
+            const grade = document.getElementById("studentGrade").value.trim();
+            if (!name || !grade) return alert("Please fill all fields!");
+
+            students.push({
+                name,
+                grade
+            });
+            renderStudents();
+            closeModal();
+            document.getElementById("studentName").value = '';
+            document.getElementById("studentGrade").value = '';
+        }
+
+        function deleteStudent(index) {
+            students.splice(index, 1);
+            renderStudents();
+        }
+
+        function sortStudents() {
+            students.sort((a, b) => a.name.localeCompare(b.name));
+            renderStudents();
+        }
+
+        function clearStudents() {
+            students = [];
+            renderStudents();
+        }
+
+        function renderStudents() {
+            const list = document.getElementById("studentList");
+            list.innerHTML = "";
+            students.forEach((s, i) => {
+                const div = document.createElement("div");
+                div.className = "student";
+                div.innerHTML = `
+      <span>${s.name} - ${s.grade}</span>
+      <button class="btn" onclick="deleteStudent(${i})">Delete</button>
+    `;
+                list.appendChild(div);
+            });
+            document.getElementById("studentCount").innerText = students.length;
+        }
+    </script>
+
+</body>
+
+</html>

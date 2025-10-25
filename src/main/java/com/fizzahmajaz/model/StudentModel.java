@@ -20,11 +20,12 @@ public class StudentModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    private String rollNumber;
     private String email;
     private String course;
     private String grade;
 
-    public StudentModel (String name, String email, String course, String grade){
+    public StudentModel (String name, String rollNumber, String email, String course, String grade){
     this.name = name;
     this.email = email;
     this.course = course;

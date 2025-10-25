@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.Scanner;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Controller;
 import com.fizzahmajaz.model.StudentModel;
 import com.fizzahmajaz.services.StudentService;
@@ -14,7 +15,7 @@ import lombok.Data;
 @Controller
 @Data
 @AllArgsConstructor
-public class StudentConsoleController {
+public class StudentConsoleController implements CommandLineRunner {
 
     @Autowired
     private final StudentService studentService;
@@ -25,13 +26,23 @@ public class StudentConsoleController {
        
         int choice;
         do{
-            System.out.println("\n==== STUDENT MANAGEMENT SYSTEM ====");
+            System.out.println("\nWelcome to the Student Management System!");
+            System.out.println("------------------------------------------");
             System.out.println("1. Add Student");
             System.out.println("2. View All Students");
             System.out.println("3. Search Student by ID");
-            System.out.println("4. Update Student");
-            System.out.println("5. Delete Students");
-            System.out.println("6. Exist");
+            System.out.println("4. Search Student by Roll Number");
+            System.out.println("5. Search Student by Name");
+            System.out.println("6. Search Student by Email");
+            System.out.println("7. Search Student by Grade");
+            System.out.println("8. Search Student by Course");
+            System.out.println("9. Update Student by ID");
+            System.out.println("10. Update Student by Roll Number");
+            System.out.println("11. Update Student by Email");
+            System.out.println("12. Delete Student by Id");
+            System.out.println("13. Delete Student by Roll Number");
+            System.out.println("14. Delete Students by Email");
+            System.out.println("15. Exit");
             System.out.println("Enter choice: ");
             choice = scanner.nextInt();
             scanner.nextLine();
@@ -39,37 +50,78 @@ public class StudentConsoleController {
             switch (choice) {
                 case 1:
                 addStudent();
-
+                break;
+                
                 case 2:
-                ViewAllStudent();
+                ViewAllStudents();
+                break;
 
                 case 3:
                 searchStudentByID();
+                break;
+                
 
                 case 4:
                 searchStudentByRollNumber();
+                break;
+                
 
                 case 5:
-                studentService.updateStudent(null, null);
+                searchStudentByName();
+                break;
+                
 
                 case 6:
-                studentService.deleteStudent(null);
+                searchStudentByEmail();
+                break;
+               
 
                 case 7:
-                System.out.println("Exiting... Goodbye!");
-                    
+                searchStudentByGrade();
+                break;
+                
+
+                case 8:
+                searchStudentByCourse();
+                break;
+
+                case 9:
+                updateStudentById();
+                break;
+
+                case 10:
+                updateStudentByRollNumber();
+                break;
+
+                case 11:
+                updateStudentByEmail();
+                break;
+
+                case 12:
+                deleteStudentById();
+                break;
+
+                case 13:
+                deleteStudentByrollNumber();
+                break;
+
+                case 14:
+                deleteStudentByEmail();
                 break;
             
                 default:
                 System.out.println("Invalid choice!");
             }
-        }while(choice != 7);   
+        }while(choice != 15);   
     }
 
     //method to add students
     private void addStudent(){
         System.out.println("Enter name: ");
         String name = scanner.nextLine();
+
+        System.out.println("Enter email: ");
+        String rollNumber = scanner.nextLine();
 
         System.out.println("Enter email: ");
         String email = scanner.nextLine();
@@ -80,35 +132,267 @@ public class StudentConsoleController {
         System.out.println("Enter grade: ");
         String grade = scanner.nextLine();
 
-        StudentModel studentModel = new StudentModel(name, email, course, grade);
+        StudentModel studentModel = new StudentModel(name, rollNumber, email, course, grade);
         studentService.addStudent(studentModel);
         System.out.println("Student added successfully!");
 
     }
 
     //method to vew all students
-    private void ViewAllStudent(){
+    private void ViewAllStudents(){
         List<StudentModel> studentModels = studentService.getAllStudents();
-        System.out.println("\nID | Name | Email | Course | Grade");
+        System.out.println("\nID | Name | Roll Number | Email | Course | Grade");
         studentModels.forEach(System.out::println);
     }
 
     //Get students by id
     private void searchStudentByID(){
-        System.out.println("Enter student ID:");
+        System.out.println("Enter student's ID:");
         Long id = scanner.nextLong();
+        scanner.nextLine();
         Optional<StudentModel> studentModel = studentService.getStudentById(id);
         studentModel.ifPresentOrElse(System.out::println, ()-> System.out.println("Student not found"));
     }
 
     //Get students by rollNumber
     private void searchStudentByRollNumber(){
-        System.out.println("Enter student ID:");
-        Long id = scanner.nextLong();
-        Optional<StudentModel> studentModel = studentService.getStudentById(id);
+        System.out.println("Enter student's Roll Number: ");
+        String rollNumber = scanner.nextLine();
+        Optional<StudentModel> studentModel = studentService.getStudentByRollNumber(rollNumber);
         studentModel.ifPresentOrElse(System.out::println, ()-> System.out.println("Student not found"));
     }
+
+    //get student by email
+    private void searchStudentByEmail(){
+        System.out.println("Enter student's email: ");
+        String email = scanner.nextLine();
+        Optional<StudentModel> student = studentService.getStudentByEmail(email);
+        if(student.isPresent()){
+            System.err.println(student.get());
+        }else{
+            System.out.println("Student not found");
+        }
+    }
+
+    //get student by name
+    private void searchStudentByName(){
+        System.out.println("Enter Student's name: ");
+        String name = scanner.nextLine();
+        List<StudentModel> students = studentService.getStudentByName(name);
+        if (!students.isEmpty()) {
+            System.out.println("Students Found!");
+            for(StudentModel s : students){
+                System.out.println(s);
+            }
+            
+        }else{
+            System.out.println("Students not found");
+        }
+    }
+
+    //get student by grade
+    private void searchStudentByGrade(){
+        System.out.println("Enter Student's grade: ");
+        String grade = scanner.nextLine();
+        List<StudentModel> students = studentService.getStudentByGrade(grade);
+        if (!students.isEmpty()) {
+            System.out.println("Students Found!");
+            for(StudentModel s : students){
+                System.out.println(s);
+            }
+            
+        }else{
+            System.out.println("Students not found");
+        }
+    }
+
+    //get student by course
+    private void searchStudentByCourse(){
+        System.out.println("Enter Student's course: ");
+        String course = scanner.nextLine();
+        List<StudentModel> students = studentService.getStudentByCourse(course);
+        if (!students.isEmpty()) {
+            System.out.println("Students Found!");
+            for(StudentModel s : students){
+                System.out.println(s);
+            }
+            
+        }else{
+            System.out.println("Students not found");
+        }
+    }
+
+    //update student by id
+    public void updateStudentById(){
+        System.out.println("Enter the student's Id: ");
+        Long id = scanner.nextLong();
+        scanner.nextLine();
+
+        System.out.println("Enter the student's name: ");
+        String name = scanner.nextLine();
+
+        System.out.println("Enter the student's Roll Number: ");
+        String rollNumber = scanner.nextLine();
+
+        System.out.println("Enter the student's email: ");
+        String email = scanner.nextLine();
+
+        System.out.println("Enter the student's course: ");
+        String course = scanner.nextLine();
+
+        System.out.println("Enter the student's grade: ");
+        String grade = scanner.nextLine();
+
+        StudentModel updatedData = new StudentModel();
+        updatedData.setId(id);
+        updatedData.setName(name);
+        updatedData.setRollNumber(rollNumber);
+        updatedData.setEmail(email);
+        updatedData.setCourse(course);
+        updatedData.setGrade(grade);
+
+            StudentModel result = studentService.updateStudentById(id, updatedData);
+            if(result != null){
+                System.out.println("Data updated successfully");
+                System.out.println(result);
+            }else{
+                System.out.println("Student not found with id" + id);
+            }
+    }
+
+    //update student by rollNumber
+    public void updateStudentByRollNumber(){
+        System.out.println("Enter the student's Id: ");
+        Long id = scanner.nextLong();
+        scanner.nextLine();
+
+        System.out.println("Enter the student's name: ");
+        String name = scanner.nextLine();
+
+        System.out.println("Enter the student's Roll Number: ");
+        String rollNumber = scanner.nextLine();
+
+        System.out.println("Enter the student's email: ");
+        String email = scanner.nextLine();
+
+        System.out.println("Enter the student's course: ");
+        String course = scanner.nextLine();
+
+        System.out.println("Enter the student's grade: ");
+        String grade = scanner.nextLine();
+
+        StudentModel updatedData = new StudentModel();
+        updatedData.setId(id);
+        updatedData.setName(name);
+        updatedData.setRollNumber(rollNumber);
+        updatedData.setEmail(email);
+        updatedData.setCourse(course);
+        updatedData.setGrade(grade);
+
+            StudentModel result = studentService.updateStudentByRollNumber(rollNumber, updatedData);
+            if(result != null){
+                System.out.println("Data updated successfully");
+                System.out.println(result);
+            }else{
+                System.out.println("Student not found with id" + id);
+            }
+    }
+
+    //update student by email
+    public void updateStudentByEmail(){
+        System.out.println("Enter the student's Id: ");
+        Long id = scanner.nextLong();
+        scanner.nextLine();
+
+        System.out.println("Enter the student's name: ");
+        String name = scanner.nextLine();
+
+        System.out.println("Enter the student's Roll Number: ");
+        String rollNumber = scanner.nextLine();
+
+        System.out.println("Enter the student's email: ");
+        String email = scanner.nextLine();
+
+        System.out.println("Enter the student's course: ");
+        String course = scanner.nextLine();
+
+        System.out.println("Enter the student's grade: ");
+        String grade = scanner.nextLine();
+
+        StudentModel updatedData = new StudentModel();
+        updatedData.setId(id);
+        updatedData.setName(name);
+        updatedData.setRollNumber(rollNumber);
+        updatedData.setEmail(email);
+        updatedData.setCourse(course);
+        updatedData.setGrade(grade);
+
+            StudentModel result = studentService.updateStudentByEmail(email, updatedData);
+            if(result != null){
+                System.out.println("Data updated successfully");
+                System.out.println(result);
+            }else{
+                System.out.println("Student not found with id" + id);
+            }
+    }
+
+    //delete student by id
+    public void deleteStudentById(){
+        System.out.println("Enter Student's id: ");
+        Long id = scanner.nextLong();
+        scanner.nextLine();
+        boolean isDeleted = studentService.deleteStudentById(id); 
+        if(isDeleted){
+            System.out.println("Student deleted successfully");
+        }else{
+            System.out.println("Student not found");
+        }
+
+    }
+
+    //delete student by rollNumber
+    public void deleteStudentByrollNumber(){
+        System.out.println("Enter Student's Roll Number: ");
+        String rollNumber = scanner.nextLine();
+        boolean isDeleted = studentService.deleteStudentByRollNumber(rollNumber);
+        if(isDeleted){
+            System.out.println("Student deleted successfully");
+        }else{
+            System.out.println("Student not found");
+        }
+
+    }
+
+    //delete student by Email
+    public void deleteStudentByEmail(){
+        System.out.println("Enter Student's email: ");
+        String email = scanner.nextLine();
+        boolean isDeleted = studentService.deleteStudentByEmail(email);
+        if(isDeleted){
+            System.out.println("Student deleted successfully");
+        }else{
+            System.out.println("Student not found");
+        }
+
+    }
+
+    
+
+    
+
 
 
 
 }
+
+
+
+//update student by id 
+//delete student by id
+
+//update student by roll number
+//delete student by roll number
+
+//update student by email
+//delete student by email
+
