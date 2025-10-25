@@ -1,9 +1,10 @@
-package com.fizzahmajaz.repository;
+package com.fizzahmajaz.student_management_system.repository;
 
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
-import com.fizzahmajaz.model.StudentModel;
+
+import com.fizzahmajaz.student_management_system.model.StudentModel;
 
 public interface StudentRepository extends JpaRepository<StudentModel, Long>{
 

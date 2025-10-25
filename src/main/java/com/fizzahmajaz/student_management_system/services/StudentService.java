@@ -1,11 +1,12 @@
-package com.fizzahmajaz.services;
+package com.fizzahmajaz.student_management_system.services;
 
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.fizzahmajaz.model.StudentModel;
-import com.fizzahmajaz.repository.StudentRepository;
+
+import com.fizzahmajaz.student_management_system.model.StudentModel;
+import com.fizzahmajaz.student_management_system.repository.StudentRepository;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

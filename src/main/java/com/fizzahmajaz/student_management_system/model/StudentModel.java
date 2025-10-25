@@ -1,4 +1,4 @@
-package com.fizzahmajaz.model;
+package com.fizzahmajaz.student_management_system.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "studnets")
+@Table(name = "students")
 public class StudentModel {
 
     @Id
@@ -27,6 +27,7 @@ public class StudentModel {
 
     public StudentModel (String name, String rollNumber, String email, String course, String grade){
     this.name = name;
+    this.rollNumber = rollNumber;
     this.email = email;
     this.course = course;
     this.grade = grade;
