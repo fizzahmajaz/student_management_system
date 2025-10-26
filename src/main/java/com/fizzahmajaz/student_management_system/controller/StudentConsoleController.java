@@ -147,7 +147,12 @@ public class StudentConsoleController implements CommandLineRunner {
         Long id = scanner.nextLong();
         scanner.nextLine();
         Optional<StudentModel> studentModel = studentService.getStudentById(id);
-        studentModel.ifPresentOrElse(System.out::println, () -> System.out.println("Student not found"));
+        if (student.isPresent()) {
+            System.out.println(student.get());
+            utilityMethods.pause();
+        } else {
+            System.out.println("Student not found");
+        }
     }
 
     // Get students by rollNumber
@@ -156,7 +161,7 @@ public class StudentConsoleController implements CommandLineRunner {
         String rollNumber = scanner.nextLine();
         Optional<StudentModel> student = studentService.getStudentByRollNumber(rollNumber);
         if (student.isPresent()) {
-            System.err.println(student.get());
+            System.out.println(student.get());
             utilityMethods.pause();
         } else {
             System.out.println("Student not found");

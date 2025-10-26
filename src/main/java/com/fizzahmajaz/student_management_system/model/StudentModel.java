@@ -25,12 +25,18 @@ public class StudentModel {
     private String course;
     private String grade;
 
-    public StudentModel (String name, String rollNumber, String email, String course, String grade){
-    this.name = name;
-    this.rollNumber = rollNumber;
-    this.email = email;
-    this.course = course;
-    this.grade = grade;
+    public StudentModel(String name, String rollNumber, String email, String course, String grade) {
+        this.name = name;
+        this.rollNumber = rollNumber;
+        this.email = email;
+        this.course = course;
+        this.grade = grade;
     }
-    
+
+    @Override
+    public String toString() {
+        return String.format("%-5d %-15s %-15s %-25s %-10s %-5s",
+                id, name, rollNumber, email, course, grade);
+    }
+
 }
