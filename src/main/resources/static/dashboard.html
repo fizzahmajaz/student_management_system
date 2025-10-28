@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Adduha — Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="bg-aurora"></div>
+    <div class="bg-stars"></div>
+
+    <div class="app">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="brand">AD</div>
+            <button class="nav-btn active" data-route="dashboard">D</button>
+            <button class="nav-btn" data-route="students">S</button>
+            <button class="nav-btn" data-route="teachers">T</button>
+            <button class="nav-btn" data-route="results">R</button>
+            <button class="nav-btn" data-route="calendar">C</button>
+            <button class="nav-btn" data-route="ai">AI</button>
+            <div class="spacer"></div>
+            <button id="logoutBtn" class="nav-btn">⎋</button>
+        </nav>
+
+        <!-- Main -->
+        <main class="main">
+            <header class="topbar">
+                <div class="left">
+                    <div class="title">Adduha Galaxy</div>
+                    <div class="search">
+                        <i class="bi bi-search"></i>
+                        <input id="globalSearch" placeholder="Search students..." />
+                    </div>
+                </div>
+
+                <div class="right">
+                    <div id="timeLabel" class="tiny">Ready</div>
+                    <button id="openAdd" class="glow-btn">+ Add Student</button>
+                </div>
+            </header>
+
+            <section class="grid" id="dashboardGrid">
+                <article class="card">
+                    <small class="muted">Students</small>
+                    <div class="kpi" id="studentCount">0</div>
+                    <small class="muted">Total enrolled</small>
+                </article>
+
+                <article class="card">
+                    <small class="muted">Calendar</small>
+                    <div class="kpi">—</div>
+                    <small class="muted">Exams & events</small>
+                </article>
+
+                <article class="card">
+                    <small class="muted">Results</small>
+                    <div class="kpi">—</div>
+                    <small class="muted">Performance overview</small>
+                </article>
+
+                <article class="card wide">
+                    <small class="muted">Announcements</small>
+                    <div class="muted" id="ann">No announcements</div>
+                </article>
+            </section>
+
+            <!-- Students list area (populated via JS when user clicks Students) -->
+            <section id="studentsSection" class="hidden">
+                <div class="list-header">
+                    <h3>Students</h3>
+                    <div class="tiny muted">Manage student records</div>
+                </div>
+                <div id="studentsTableWrap" class="card wide">
+                    <table id="studentsTable" class="students-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Full Name</th>
+                                <th>Roll</th>
+                                <th>Email</th>
+                                <th>Course</th>
+                                <th>Grade</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Add Student Modal (glass) -->
+    <div id="modalBackdrop" class="modal-backdrop">
+        <div class="modal-card">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+                <h4>Add Student</h4>
+                <button id="modalClose" class="btn-ghost">✕</button>
+            </div>
+
+            <div class="form-grid">
+                <label>Full name<input id="mName" /></label>
+                <label>Roll No<input id="mRoll" /></label>
+                <label>Class / Section<input id="mClass" /></label>
+                <label>Email<input id="mEmail" type="email" /></label>
+                <label>Course<input id="mCourse" /></label>
+                <label>Grade<input id="mGrade" /></label>
+                <label>Notes<textarea id="mNotes"></textarea></label>
+            </div>
+
+            <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:12px">
+                <button id="modalClear" class="btn-ghost">Clear</button>
+                <button id="modalSave" class="glow-btn">Save</button>
+            </div>
+            <div id="modalMsg" class="tiny muted" style="margin-top:10px"></div>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+
+</html>

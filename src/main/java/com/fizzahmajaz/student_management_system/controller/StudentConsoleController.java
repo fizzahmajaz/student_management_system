@@ -3,11 +3,14 @@ package com.fizzahmajaz.student_management_system.controller;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
+
+import org.apache.tomcat.util.buf.Ascii;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Controller;
 import com.fizzahmajaz.student_management_system.model.StudentModel;
 import com.fizzahmajaz.student_management_system.services.StudentService;
+import com.fizzahmajaz.student_management_system.utility.AsciiTablePrinter;
 import com.fizzahmajaz.student_management_system.utility.utilityMethods;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,6 +23,7 @@ public class StudentConsoleController implements CommandLineRunner {
     @Autowired
     private final StudentService studentService;
     private final utilityMethods utilityMethods;
+    private final AsciiTablePrinter asciiTablePrinter;
     private final Scanner scanner = new Scanner(System.in);
 
     @Override
@@ -137,8 +141,8 @@ public class StudentConsoleController implements CommandLineRunner {
     // method to vew all students
     private void ViewAllStudents() {
         List<StudentModel> studentModels = studentService.getAllStudents();
-        System.out.println("\nID | Name | Roll Number | Email | Course | Grade");
-        studentModels.forEach(System.out::println);
+        asciiTablePrinter.printStudents(studentModels);
+        utilityMethods.pause();
     }
 
     // Get students by id
@@ -146,13 +150,14 @@ public class StudentConsoleController implements CommandLineRunner {
         System.out.println("Enter student's ID:");
         Long id = scanner.nextLong();
         scanner.nextLine();
-        Optional<StudentModel> studentModel = studentService.getStudentById(id);
+        Optional<StudentModel> student = studentService.getStudentById(id);
         if (student.isPresent()) {
-            System.out.println(student.get());
-            utilityMethods.pause();
+            asciiTablePrinter.printSingleStudent(student.get());
+            
         } else {
             System.out.println("Student not found");
         }
+        utilityMethods.pause();
     }
 
     // Get students by rollNumber
@@ -161,11 +166,12 @@ public class StudentConsoleController implements CommandLineRunner {
         String rollNumber = scanner.nextLine();
         Optional<StudentModel> student = studentService.getStudentByRollNumber(rollNumber);
         if (student.isPresent()) {
-            System.out.println(student.get());
-            utilityMethods.pause();
+            asciiTablePrinter.printSingleStudent(student.get());
+            
         } else {
             System.out.println("Student not found");
         }
+        utilityMethods.pause();
     }
 
     // get student by email
@@ -174,11 +180,12 @@ public class StudentConsoleController implements CommandLineRunner {
         String email = scanner.nextLine();
         Optional<StudentModel> student = studentService.getStudentByEmail(email);
         if (student.isPresent()) {
-            System.err.println(student.get());
-            utilityMethods.pause();
+            asciiTablePrinter.printSingleStudent(student.get());
+            
         } else {
             System.out.println("Student not found");
         }
+        utilityMethods.pause();
     }
 
     // get student by name
@@ -187,19 +194,11 @@ public class StudentConsoleController implements CommandLineRunner {
         String name = scanner.nextLine();
         List<StudentModel> students = studentService.getStudentByName(name);
         if (!students.isEmpty()) {
-            System.out.println("Students Found!");
-            for (StudentModel s : students) {
-                System.out.printf("%-5d %-15s %-15s %-25s %-10s %-5s\n",
-                        s.getId(), s.getName(), s.getRollNumber(), s.getEmail(), s.getCourse(), s.getGrade());
-            }
-            utilityMethods.pause();
+            asciiTablePrinter.printStudents(students);
+        } else {
+            System.out.println("Student not found");
         }
-
-        else
-
-        {
-            System.out.println("Students not found");
-        }
+        utilityMethods.pause();
     }
 
     // get student by grade
@@ -208,15 +207,11 @@ public class StudentConsoleController implements CommandLineRunner {
         String grade = scanner.nextLine();
         List<StudentModel> students = studentService.getStudentByGrade(grade);
         if (!students.isEmpty()) {
-            System.out.println("Students Found!");
-            for (StudentModel s : students) {
-                System.out.printf("%-5d %-15s %-15s %-25s %-10s %-5s\n",
-                        s.getId(), s.getName(), s.getRollNumber(), s.getEmail(), s.getCourse(), s.getGrade());
-            }
-            utilityMethods.pause();
+            asciiTablePrinter.printStudents(students);
         } else {
-            System.out.println("Students not found");
+            System.out.println("Student not found");
         }
+        utilityMethods.pause();
 
     }
 
@@ -226,17 +221,11 @@ public class StudentConsoleController implements CommandLineRunner {
         String course = scanner.nextLine();
         List<StudentModel> students = studentService.getStudentByCourse(course);
         if (!students.isEmpty()) {
-            System.out.println("Students Found!");
-            for (StudentModel s : students) {
-                System.out.printf("%-5d %-15s %-15s %-25s %-10s %-5s\n",
-                        s.getId(), s.getName(), s.getRollNumber(), s.getEmail(), s.getCourse(), s.getGrade());
-            }
-            utilityMethods.pause();
+            asciiTablePrinter.printStudents(students);
+        } else {
+            System.out.println("Student not found");
         }
-
-        else {
-            System.out.println("Students not found");
-        }
+        utilityMethods.pause();
     }
 
     // update student by id
@@ -245,29 +234,7 @@ public class StudentConsoleController implements CommandLineRunner {
         Long id = scanner.nextLong();
         scanner.nextLine();
 
-        System.out.println("Enter the student's name: ");
-        String name = scanner.nextLine();
-
-        System.out.println("Enter the student's Roll Number: ");
-        String rollNumber = scanner.nextLine();
-
-        System.out.println("Enter the student's email: ");
-        String email = scanner.nextLine();
-
-        System.out.println("Enter the student's course: ");
-        String course = scanner.nextLine();
-
-        System.out.println("Enter the student's grade: ");
-        String grade = scanner.nextLine();
-
-        StudentModel updatedData = new StudentModel();
-        updatedData.setId(id);
-        updatedData.setName(name);
-        updatedData.setRollNumber(rollNumber);
-        updatedData.setEmail(email);
-        updatedData.setCourse(course);
-        updatedData.setGrade(grade);
-
+        StudentModel updatedData = utilityMethods.studentDataInput(id);
         StudentModel result = studentService.updateStudentById(id, updatedData);
         if (result != null) {
             System.out.println("Data updated successfully");
@@ -280,79 +247,35 @@ public class StudentConsoleController implements CommandLineRunner {
 
     // update student by rollNumber
     public void updateStudentByRollNumber() {
-        System.out.println("Enter the student's Id: ");
-        Long id = scanner.nextLong();
-        scanner.nextLine();
-
-        System.out.println("Enter the student's name: ");
-        String name = scanner.nextLine();
-
         System.out.println("Enter the student's Roll Number: ");
         String rollNumber = scanner.nextLine();
+        scanner.nextLine();
 
-        System.out.println("Enter the student's email: ");
-        String email = scanner.nextLine();
-
-        System.out.println("Enter the student's course: ");
-        String course = scanner.nextLine();
-
-        System.out.println("Enter the student's grade: ");
-        String grade = scanner.nextLine();
-
-        StudentModel updatedData = new StudentModel();
-        updatedData.setId(id);
-        updatedData.setName(name);
-        updatedData.setRollNumber(rollNumber);
-        updatedData.setEmail(email);
-        updatedData.setCourse(course);
-        updatedData.setGrade(grade);
-
+        StudentModel updatedData = utilityMethods.studentDataInput(null);
         StudentModel result = studentService.updateStudentByRollNumber(rollNumber, updatedData);
         if (result != null) {
             System.out.println("Data updated successfully");
             System.out.println(result);
             utilityMethods.pause();
         } else {
-            System.out.println("Student not found with id" + id);
+            System.out.println("Student not found with Roll Number" + rollNumber);
         }
     }
 
     // update student by email
     public void updateStudentByEmail() {
-        System.out.println("Enter the student's Id: ");
-        Long id = scanner.nextLong();
+        System.out.println("Enter the student's Email: ");
+        String email = scanner.nextLine();
         scanner.nextLine();
 
-        System.out.println("Enter the student's name: ");
-        String name = scanner.nextLine();
-
-        System.out.println("Enter the student's Roll Number: ");
-        String rollNumber = scanner.nextLine();
-
-        System.out.println("Enter the student's email: ");
-        String email = scanner.nextLine();
-
-        System.out.println("Enter the student's course: ");
-        String course = scanner.nextLine();
-
-        System.out.println("Enter the student's grade: ");
-        String grade = scanner.nextLine();
-
-        StudentModel updatedData = new StudentModel();
-        updatedData.setId(id);
-        updatedData.setName(name);
-        updatedData.setRollNumber(rollNumber);
-        updatedData.setEmail(email);
-        updatedData.setCourse(course);
-        updatedData.setGrade(grade);
-
+        StudentModel updatedData = utilityMethods.studentDataInput(null);
         StudentModel result = studentService.updateStudentByEmail(email, updatedData);
         if (result != null) {
             System.out.println("Data updated successfully");
             System.out.println(result);
             utilityMethods.pause();
         } else {
-            System.out.println("Student not found with id" + id);
+            System.out.println("Student not found with Email" + email);
         }
     }
 
