@@ -1,7 +1,6 @@
 package com.fizzahmajaz.student_management_system.utility;
 
 import java.util.List;
-
 import org.springframework.stereotype.Component;
 import com.fizzahmajaz.student_management_system.model.StudentModel;
 import de.vandermeer.asciitable.AsciiTable;
@@ -55,6 +54,7 @@ public class AsciiTablePrinter {
         table.addRow("Email", student.getEmail());
         table.addRow("Course", student.getCourse());
         table.addRow("Grade", student.getGrade());
+        table.addRule();
 
         String renderedTable = table.render();
         System.out.println(renderedTable);

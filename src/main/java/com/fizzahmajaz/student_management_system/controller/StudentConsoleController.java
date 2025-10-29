@@ -3,8 +3,6 @@ package com.fizzahmajaz.student_management_system.controller;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
-
-import org.apache.tomcat.util.buf.Ascii;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Controller;

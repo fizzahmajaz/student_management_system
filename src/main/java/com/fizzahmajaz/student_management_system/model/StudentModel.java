@@ -32,11 +32,8 @@ public class StudentModel {
         this.course = course;
         this.grade = grade;
     }
+    
 
-    @Override
-    public String toString() {
-        return String.format("%-5d %-15s %-15s %-25s %-10s %-5s",
-                id, name, rollNumber, email, course, grade);
-    }
+
 
 }

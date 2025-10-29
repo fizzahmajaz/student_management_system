@@ -1,14 +1,12 @@
 package com.fizzahmajaz.student_management_system.utility;
 
 import java.util.Scanner;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.fizzahmajaz.student_management_system.model.StudentModel;
 
 @Component
 public class utilityMethods {
 
-    @Autowired
     private final Scanner scanner = new Scanner(System.in);
 
     //For clearing screen before every loop
