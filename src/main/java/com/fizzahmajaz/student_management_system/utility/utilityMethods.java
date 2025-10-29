@@ -18,17 +18,19 @@ public class utilityMethods {
 
     //For pausing after every task
     public void pause(){
-        System.out.println("\n Press Enter to continue...");
+        System.out.println(ConsoleColors.PURPLE + "\n Press Enter to continue..." + ConsoleColors.RESET);
         scanner.nextLine();
     }
 
     //For printing the header
     public void printHeader(String title, String developer){
         clearScreen();
-        System.out.println("\n========================================================");
-        System.out.println("        " + title.toUpperCase());
-        System.out.println("==========================================================");
-        System.out.println("        " + developer.toUpperCase());
+        System.out.println(ConsoleColors.BOLD_WHITE + "\n==============================================================================================================================" + ConsoleColors.RESET);
+        System.out.println(ConsoleColors.BOLD_PURPLE + "                        " + title.toUpperCase() + ConsoleColors.RESET);
+        System.out.println("\n-------------------------------------------------------------------------------------------------------------------------------");
+        System.out.println(ConsoleColors.PURPLE + "                             " + developer.toUpperCase() + ConsoleColors.RESET);
+        System.out.println(ConsoleColors.BOLD_WHITE + "=================================================================================================================================" + ConsoleColors.RESET);
+        
         System.out.println();
 
     }
@@ -36,19 +38,19 @@ public class utilityMethods {
     //For taking the student data
     public StudentModel studentDataInput(Long id){
 
-        System.out.println("Enter the student's name: ");
+        System.out.println(ConsoleColors.CYAN + "Enter the student's name: " + ConsoleColors.RESET);
         String name = scanner.nextLine();
 
-        System.out.println("Enter the student's Roll Number: ");
+        System.out.println(ConsoleColors.CYAN + "Enter the student's Roll Number: " + ConsoleColors.RESET);
         String rollNumber = scanner.nextLine();
 
-        System.out.println("Enter the student's email: ");
+        System.out.println(ConsoleColors.CYAN + "Enter the student's email: " + ConsoleColors.RESET);
         String email = scanner.nextLine();
 
-        System.out.println("Enter the student's course: ");
+        System.out.println(ConsoleColors.CYAN + "Enter the student's course: " + ConsoleColors.RESET);
         String course = scanner.nextLine();
 
-        System.out.println("Enter the student's grade: ");
+        System.out.println(ConsoleColors.CYAN + "Enter the student's grade: " + ConsoleColors.RESET);
         String grade = scanner.nextLine();
 
         StudentModel student = new StudentModel();

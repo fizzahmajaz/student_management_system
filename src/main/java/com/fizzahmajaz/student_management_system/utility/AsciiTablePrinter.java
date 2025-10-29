@@ -11,7 +11,7 @@ public class AsciiTablePrinter {
     public void printStudents(List<StudentModel> students) {
         // Method to print list of students
         if (students == null || students.isEmpty()) {
-            System.out.println("Students not found!");
+            System.out.println(ConsoleColors.RED + "Student not found" + ConsoleColors.RESET);
             return;
         }
 
@@ -42,7 +42,7 @@ public class AsciiTablePrinter {
     public void printSingleStudent(StudentModel student) {
 
         if (student == null) {
-            System.out.println("Students not found!");
+            System.out.println(ConsoleColors.RED + "Student not found" + ConsoleColors.RESET);
         }
 
         AsciiTable table = new AsciiTable();

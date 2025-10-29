@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import com.fizzahmajaz.student_management_system.model.StudentModel;
 import com.fizzahmajaz.student_management_system.services.StudentService;
 import com.fizzahmajaz.student_management_system.utility.AsciiTablePrinter;
+import com.fizzahmajaz.student_management_system.utility.ConsoleColors;
 import com.fizzahmajaz.student_management_system.utility.utilityMethods;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,22 +31,22 @@ public class StudentConsoleController implements CommandLineRunner {
         int choice;
         do {
             utilityMethods.printHeader("WELCOME TO STUDENT MANAGEMENT SYSTEM", "Developed by Fizzah M. Ajaz");
-            System.out.println("1. Add Student");
-            System.out.println("2. View All Students");
-            System.out.println("3. Search Student by ID");
-            System.out.println("4. Search Student by Roll Number");
-            System.out.println("5. Search Student by Name");
-            System.out.println("6. Search Student by Email");
-            System.out.println("7. Search Student by Grade");
-            System.out.println("8. Search Student by Course");
-            System.out.println("9. Update Student by ID");
-            System.out.println("10. Update Student by Roll Number");
-            System.out.println("11. Update Student by Email");
-            System.out.println("12. Delete Student by Id");
-            System.out.println("13. Delete Student by Roll Number");
-            System.out.println("14. Delete Students by Email");
-            System.out.println("15. Exit");
-            System.out.println("Enter choice: ");
+            System.out.println(ConsoleColors.YELLOW + "1. Add Student" + ConsoleColors.RESET);
+            System.out.println(ConsoleColors.YELLOW + "2. View All Students" + ConsoleColors.RESET);
+            System.out.println(ConsoleColors.YELLOW + "3. Search Student by ID" + ConsoleColors.RESET);
+            System.out.println(ConsoleColors.YELLOW + "4. Search Student by Roll Number" + ConsoleColors.RESET);
+            System.out.println(ConsoleColors.YELLOW + "5. Search Student by Name" + ConsoleColors.RESET);
+            System.out.println(ConsoleColors.YELLOW + "6. Search Student by Email" + ConsoleColors.RESET);
+            System.out.println(ConsoleColors.YELLOW + "7. Search Student by Grade" + ConsoleColors.RESET);
+            System.out.println(ConsoleColors.YELLOW + "8. Search Student by Course" + ConsoleColors.RESET);
+            System.out.println(ConsoleColors.YELLOW + "9. Update Student by ID" + ConsoleColors.RESET);
+            System.out.println(ConsoleColors.YELLOW + "10. Update Student by Roll Number" + ConsoleColors.RESET);
+            System.out.println(ConsoleColors.YELLOW + "11. Update Student by Email" + ConsoleColors.RESET);
+            System.out.println(ConsoleColors.YELLOW + "12. Delete Student by Id" + ConsoleColors.RESET);
+            System.out.println(ConsoleColors.YELLOW + "13. Delete Student by Roll Number" + ConsoleColors.RESET);
+            System.out.println(ConsoleColors.YELLOW + "14. Delete Students by Email" + ConsoleColors.RESET);
+            System.out.println(ConsoleColors.YELLOW + "15. Exit" + ConsoleColors.RESET);
+            System.out.println(ConsoleColors.CYAN + "Enter choice: " + ConsoleColors.RESET);
             choice = scanner.nextInt();
             scanner.nextLine();
 
@@ -114,24 +115,24 @@ public class StudentConsoleController implements CommandLineRunner {
 
     // method to add students
     private void addStudent() {
-        System.out.println("Enter name: ");
+        System.out.println(ConsoleColors.CYAN + "Enter name: " + ConsoleColors.RESET);
         String name = scanner.nextLine();
 
-        System.out.println("Enter Roll Number: ");
+        System.out.println(ConsoleColors.CYAN + "Enter Roll Number: " + ConsoleColors.RESET);
         String rollNumber = scanner.nextLine();
 
-        System.out.println("Enter email: ");
+        System.out.println(ConsoleColors.CYAN + "Enter email: " + ConsoleColors.RESET);
         String email = scanner.nextLine();
 
-        System.out.println("Enter course: ");
+        System.out.println(ConsoleColors.CYAN + "Enter course: " + ConsoleColors.RESET);
         String course = scanner.nextLine();
 
-        System.out.println("Enter grade: ");
+        System.out.println(ConsoleColors.CYAN + "Enter grade: " + ConsoleColors.RESET);
         String grade = scanner.nextLine();
 
         StudentModel studentModel = new StudentModel(name, rollNumber, email, course, grade);
         studentService.addStudent(studentModel);
-        System.out.println("Student added successfully!");
+        System.out.println(ConsoleColors.GREEN + "Student added successfully!" + ConsoleColors.RESET);
         utilityMethods.pause();
 
     }
@@ -145,7 +146,7 @@ public class StudentConsoleController implements CommandLineRunner {
 
     // Get students by id
     private void searchStudentByID() {
-        System.out.println("Enter student's ID:");
+        System.out.println(ConsoleColors.CYAN + "Enter student's ID:" + ConsoleColors.RESET);
         Long id = scanner.nextLong();
         scanner.nextLine();
         Optional<StudentModel> student = studentService.getStudentById(id);
@@ -153,61 +154,61 @@ public class StudentConsoleController implements CommandLineRunner {
             asciiTablePrinter.printSingleStudent(student.get());
             
         } else {
-            System.out.println("Student not found");
+            System.out.println(ConsoleColors.RED + "Student not found" + ConsoleColors.RESET);
         }
         utilityMethods.pause();
     }
 
     // Get students by rollNumber
     private void searchStudentByRollNumber() {
-        System.out.println("Enter student's Roll Number: ");
+        System.out.println(ConsoleColors.CYAN + "Enter student's Roll Number: " + ConsoleColors.RESET);
         String rollNumber = scanner.nextLine();
         Optional<StudentModel> student = studentService.getStudentByRollNumber(rollNumber);
         if (student.isPresent()) {
             asciiTablePrinter.printSingleStudent(student.get());
             
         } else {
-            System.out.println("Student not found");
+            System.out.println(ConsoleColors.RED + "Student not found" + ConsoleColors.RESET);
         }
         utilityMethods.pause();
     }
 
     // get student by email
     private void searchStudentByEmail() {
-        System.out.println("Enter student's email: ");
+        System.out.println(ConsoleColors.CYAN + "Enter student's email: " + ConsoleColors.RESET);
         String email = scanner.nextLine();
         Optional<StudentModel> student = studentService.getStudentByEmail(email);
         if (student.isPresent()) {
             asciiTablePrinter.printSingleStudent(student.get());
             
         } else {
-            System.out.println("Student not found");
+            System.out.println(ConsoleColors.RED + "Student not found" + ConsoleColors.RESET);
         }
         utilityMethods.pause();
     }
 
     // get student by name
     private void searchStudentByName() {
-        System.out.println("Enter Student's name: ");
+        System.out.println(ConsoleColors.CYAN + "Enter Student's name: " + ConsoleColors.RESET);
         String name = scanner.nextLine();
         List<StudentModel> students = studentService.getStudentByName(name);
         if (!students.isEmpty()) {
             asciiTablePrinter.printStudents(students);
         } else {
-            System.out.println("Student not found");
+            System.out.println(ConsoleColors.RED + "Student not found" + ConsoleColors.RESET);
         }
         utilityMethods.pause();
     }
 
     // get student by grade
     private void searchStudentByGrade() {
-        System.out.println("Enter Student's grade: ");
+        System.out.println(ConsoleColors.CYAN + "Enter Student's grade: " + ConsoleColors.RESET);
         String grade = scanner.nextLine();
         List<StudentModel> students = studentService.getStudentByGrade(grade);
         if (!students.isEmpty()) {
             asciiTablePrinter.printStudents(students);
         } else {
-            System.out.println("Student not found");
+            System.out.println(ConsoleColors.RED + "Student not found" + ConsoleColors.RESET);
         }
         utilityMethods.pause();
 
@@ -215,107 +216,105 @@ public class StudentConsoleController implements CommandLineRunner {
 
     // get student by course
     private void searchStudentByCourse() {
-        System.out.println("Enter Student's course: ");
+        System.out.println(ConsoleColors.CYAN + "Enter Student's course: " + ConsoleColors.RESET);
         String course = scanner.nextLine();
         List<StudentModel> students = studentService.getStudentByCourse(course);
         if (!students.isEmpty()) {
             asciiTablePrinter.printStudents(students);
         } else {
-            System.out.println("Student not found");
+            System.out.println(ConsoleColors.RED + "Student not found" + ConsoleColors.RESET);
         }
         utilityMethods.pause();
     }
 
     // update student by id
     public void updateStudentById() {
-        System.out.println("Enter the student's Id: ");
+        System.out.println(ConsoleColors.CYAN + "Enter the student's Id: " + ConsoleColors.RESET);
         Long id = scanner.nextLong();
         scanner.nextLine();
 
         StudentModel updatedData = utilityMethods.studentDataInput(id);
         StudentModel result = studentService.updateStudentById(id, updatedData);
         if (result != null) {
-            System.out.println("Data updated successfully");
+            System.out.println(ConsoleColors.GREEN + "Data updated successfully"  + ConsoleColors.RESET );
             System.out.println(result);
             utilityMethods.pause();
         } else {
-            System.out.println("Student not found with id" + id);
+            System.out.println(ConsoleColors.RED + "Student not found with id" + id + ConsoleColors.RESET);
         }
     }
 
     // update student by rollNumber
     public void updateStudentByRollNumber() {
-        System.out.println("Enter the student's Roll Number: ");
+        System.out.println(ConsoleColors.CYAN + "Enter the student's Roll Number: " + ConsoleColors.RESET);
         String rollNumber = scanner.nextLine();
         scanner.nextLine();
 
         StudentModel updatedData = utilityMethods.studentDataInput(null);
         StudentModel result = studentService.updateStudentByRollNumber(rollNumber, updatedData);
         if (result != null) {
-            System.out.println("Data updated successfully");
-            System.out.println(result);
+            System.out.println(ConsoleColors.GREEN + "Data updated successfully"  + ConsoleColors.RESET);            System.out.println(result);
             utilityMethods.pause();
         } else {
-            System.out.println("Student not found with Roll Number" + rollNumber);
+            System.out.println(ConsoleColors.RED + "Student not found with Roll Number" + rollNumber + ConsoleColors.RESET);
         }
     }
 
     // update student by email
     public void updateStudentByEmail() {
-        System.out.println("Enter the student's Email: ");
+        System.out.println(ConsoleColors.CYAN + "Enter the student's Email: " + ConsoleColors.RESET);
         String email = scanner.nextLine();
         scanner.nextLine();
 
         StudentModel updatedData = utilityMethods.studentDataInput(null);
         StudentModel result = studentService.updateStudentByEmail(email, updatedData);
         if (result != null) {
-            System.out.println("Data updated successfully");
-            System.out.println(result);
+            System.out.println(ConsoleColors.GREEN + "Data updated successfully"  + ConsoleColors.RESET);            System.out.println(result);
             utilityMethods.pause();
         } else {
-            System.out.println("Student not found with Email" + email);
+            System.out.println(ConsoleColors.RED + "Student not found with Email" + email + ConsoleColors.RESET);
         }
     }
 
     // delete student by id
     public void deleteStudentById() {
-        System.out.println("Enter Student's id: ");
+        System.out.println(ConsoleColors.CYAN + "Enter Student's id: " + ConsoleColors.RESET);
         Long id = scanner.nextLong();
         scanner.nextLine();
         boolean isDeleted = studentService.deleteStudentById(id);
         if (isDeleted) {
-            System.out.println("Student deleted successfully");
+            System.out.println(ConsoleColors.GREEN + "Student deleted successfully" + ConsoleColors.RESET);
             utilityMethods.pause();
         } else {
-            System.out.println("Student not found");
+            System.out.println(ConsoleColors.RED + "Student not found" + ConsoleColors.RESET);
         }
 
     }
 
     // delete student by rollNumber
     public void deleteStudentByrollNumber() {
-        System.out.println("Enter Student's Roll Number: ");
+        System.out.println(ConsoleColors.CYAN + "Enter Student's Roll Number: " + ConsoleColors.RESET);
         String rollNumber = scanner.nextLine();
         boolean isDeleted = studentService.deleteStudentByRollNumber(rollNumber);
         if (isDeleted) {
-            System.out.println("Student deleted successfully");
+            System.out.println(ConsoleColors.GREEN + "Student deleted successfully" + ConsoleColors.RESET);
             utilityMethods.pause();
         } else {
-            System.out.println("Student not found");
+            System.out.println(ConsoleColors.RED + "Student not found" + ConsoleColors.RESET);
         }
 
     }
 
     // delete student by Email
     public void deleteStudentByEmail() {
-        System.out.println("Enter Student's email: ");
+        System.out.println(ConsoleColors.CYAN + "Enter Student's email: " + ConsoleColors.RESET);
         String email = scanner.nextLine();
         boolean isDeleted = studentService.deleteStudentByEmail(email);
         if (isDeleted) {
-            System.out.println("Student deleted successfully");
+            System.out.println(ConsoleColors.GREEN + "Student deleted successfully" + ConsoleColors.RESET);
             utilityMethods.pause();
         } else {
-            System.out.println("Student not found");
+            System.out.println(ConsoleColors.RED + "Student not found" + ConsoleColors.RESET);
         }
 
     }
